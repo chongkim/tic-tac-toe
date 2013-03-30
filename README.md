@@ -1,7 +1,7 @@
 tic-tac-toe
 ===========
 
-A little command line unbeatable Tic Tac Toe.
+An unbeatable command line Tic Tac Toe program.  When it initially starts, it will take a few seconds to make a move because it is calculating all possible moves to find the best move.
 
 Example run
 ===========
