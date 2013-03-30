@@ -31,14 +31,8 @@ class TicTacToe
     @e ||= 0
     return @e
   end
-  def move pos
-    @t, @s, @e, @b[pos] = -@t, @s+1, nil, "o x"[@t+1] if pos
-    self
-  end
-  def unmove pos
-    @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos
-    self
-  end
+  def move pos; @t, @s, @e, @b[pos] = -@t, @s+1, nil, "o x"[@t+1] if pos; self; end
+  def unmove pos; @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos; self; end
   def best_moves; possible_moves.map {|m| [deep_evaluate(m), m] }.sort{|a,b| (10*(b[0]<=>a[0])+(a[1]<=>b[1]))*@t}.map{|e| e[1]}; end
   def deep_evaluate m=nil
     move(m)
