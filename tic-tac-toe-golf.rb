@@ -1,12 +1,10 @@
 #!/usr/bin/env ruby
-
 class TicTacToe
   def initialize row1="   ", row2="   ", row3="   "
     @b = "-" + row1 + row2 + row3
     @t = 1
     @s = 0
   end
-
   def show
     str = ""
     3.times do |i|
@@ -16,11 +14,9 @@ class TicTacToe
     print str
     str
   end
-
   def positions *list
     list.map{|n| @b[n]}.join
   end
-
   def prompt
     show
     puts "possible moves: #{possible_moves.inspect}"
@@ -35,11 +31,9 @@ class TicTacToe
     end while true
     str
   end
-
   def possible_moves
     (1..9).map {|i| @b[i] == ' ' ? i : nil}.compact
   end
-
   def evaluate
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9),
              positions(1,4,7), positions(2,5,8), positions(3,6,9),
@@ -48,21 +42,18 @@ class TicTacToe
     return -100+@s if lines.any? {|line| line == "ooo" }
     return 0
   end
-
   def move pos
     @b[pos] = @t == 1 ? "x" : "o"
     @t = -@t
     @s += 1
     self
   end
-
   def unmove pos
     @b[pos] = ' '
     @t = -@t
     @s -= 1
     self
   end
-
   def best_moves
     list = possible_moves.map do |m|
       move(m)
@@ -76,11 +67,9 @@ class TicTacToe
       t*@t
     }.map{|e| e[1]}
   end
-
   def deep_evaluate
     return evaluate if evaluate != 0
     return 0 if possible_moves.empty?
-
     values = []
     possible_moves.each do |m|
       move(m)
@@ -89,14 +78,11 @@ class TicTacToe
     end
     return @t < 0 ? values.min : values.max
   end
-
   def main_loop
     last_mover = nil
     while evaluate == 0 && !possible_moves.empty? && (m = prompt) != 'q'
-
       move(m.to_i) unless m == 's'
       last_mover = :you
-
       b = best_moves
       unless b.empty?
         move(b[0])
@@ -109,7 +95,6 @@ class TicTacToe
     end
   end
 end
-
 if __FILE__ == $0 then
   TicTacToe.new.main_loop
 end
