@@ -77,7 +77,8 @@ class TicTacToe
   end
 
   def deep_evaluate
-    return evaluate if evaluate != 0
+    e = evaluate
+    return e if e != 0
     return 0 if possible_moves.empty?
 
     values = []
