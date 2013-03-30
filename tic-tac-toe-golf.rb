@@ -7,9 +7,7 @@ class TicTacToe
   def prompt
     puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
-      skip_code_str = @s == 0 ? ",s" : ""
-      skip_desc_str = @s == 0 ? ", s-skip" : ""
-      print "input [1-9,q#{skip_code_str}] (1 top-left, 9-lower-right, q-quit#{skip_desc_str}): "
+      print "input [1-9,q#{[",s"][@s]}] (1 top-left, 9-lower-right, q-quit#{[", s-skip"][@s]}): "
       str = gets.chomp
     end while !(str =~ /[1-9]/ && @b[str.to_i] == ' ') && str != 'q' && !(@s == 0 && str == 's')
     str
