@@ -32,7 +32,7 @@ class TicTacToe
     return @e
   end
   def move pos; @t, @s, @e, @b[pos] = -@t, @s+1, nil, "o x"[@t+1] if pos; self; end
-  def unmove pos; @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos; self; end
+  def unmove pos; @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos; self;   end
   def best_moves; possible_moves.map {|m| [deep_evaluate(m), m] }.sort{|a,b| (10*(b[0]<=>a[0])+(a[1]<=>b[1]))*@t}.map{|e| e[1]}; end
   def deep_evaluate m=nil
     move(m)
@@ -43,17 +43,16 @@ class TicTacToe
     unmove(m)
   end
   def main_loop
-    last_mover = nil
     while evaluate == 0 && !possible_moves.empty? && (m = prompt) != 'q'
       move(m.to_i) if m != 's'
-      last_mover = :you
+      @last_mover = :you
       b = best_moves
       if !b.empty?
         move(b[0])
-        last_mover = :computer
+        @last_mover = :computer
       end
     end
-    puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}" if m != 'q'
+    puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{@last_mover}"}" if m != 'q'
   end
 end
 
