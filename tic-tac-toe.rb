@@ -52,24 +52,25 @@ class TicTacToe
   end
 
   def move pos
-    board[pos] = turn == 1 ? "x" : "o"
+    @board[pos] = turn == 1 ? "x" : "o"
     @turn = -@turn
     @step += 1
     self
   end
 
-  def clone
-    t = TicTacToe.new
-    t.board = board.clone
-    t.turn = @turn
-    t.step = @step
-    t
+  def unmove pos
+    @board[pos] = ' '
+    @turn = -@turn
+    @step -= 1
+    self
   end
 
   def best_moves
     possible_moves.map do |m|
-      t = self.clone.move(m)
-      [t.deep_evaluate, m]
+      move(m)
+      result = [deep_evaluate, m]
+      unmove(m)
+      result
     end.sort { |a,b|
       t = b[0] <=> a[0];                # sort by evaluation
       t = t == 0 ? a[1] <=> b[1] : t    # secondly by move
@@ -83,9 +84,9 @@ class TicTacToe
 
     values = []
     possible_moves.each do |m|
-      t = clone
-      t.move(m)
-      values << t.deep_evaluate
+      move(m)
+      values << deep_evaluate
+      unmove(m)
     end
     return @turn < 0 ? values.min : values.max
   end
