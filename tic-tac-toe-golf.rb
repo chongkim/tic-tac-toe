@@ -35,31 +35,36 @@ class TicTacToe
     (1..9).map {|i| @b[i] == ' ' ? i : nil}.compact
   end
   def evaluate
+    return @e if @e
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9),
              positions(1,4,7), positions(2,5,8), positions(3,6,9),
              positions(1,5,9), positions(3,5,7)] #diagonal
-    return  100-@s if lines.any? {|line| line == "xxx" }
-    return -100+@s if lines.any? {|line| line == "ooo" }
-    return 0
+    @e =  100-@s if lines.any? {|line| line == "xxx" }
+    @e = -100+@s if @e.nil? && lines.any? {|line| line == "ooo" }
+    @e ||= 0
+    return @e
   end
   def move pos
-    @b[pos] = @t == 1 ? "x" : "o"
-    @t = -@t
-    @s += 1
+    if pos
+      @b[pos] = @t == 1 ? "x" : "o"
+      @t = -@t
+      @s += 1
+      @e = nil
+    end
     self
   end
   def unmove pos
-    @b[pos] = ' '
-    @t = -@t
-    @s -= 1
+    if pos
+      @b[pos] = ' '
+      @t = -@t
+      @s -= 1
+      @e = nil
+    end
     self
   end
   def best_moves
     list = possible_moves.map do |m|
-      move(m)
-      e = deep_evaluate
-      unmove(m)
-      [e, m]
+      [deep_evaluate(m), m]
     end
     list.sort { |a,b|
       t = b[0] <=> a[0];
@@ -67,16 +72,17 @@ class TicTacToe
       t*@t
     }.map{|e| e[1]}
   end
-  def deep_evaluate
+  def deep_evaluate m=nil
+    move(m)
     return evaluate if evaluate != 0
     return 0 if possible_moves.empty?
     values = []
     possible_moves.each do |m|
-      move(m)
-      values << deep_evaluate
-      unmove(m)
+      values << deep_evaluate(m)
     end
     return @t < 0 ? values.min : values.max
+  ensure
+    unmove(m)
   end
   def main_loop
     last_mover = nil
