@@ -37,21 +37,11 @@ class TicTacToe
     return @e
   end
   def move pos
-    if pos
-      @b[pos] = "o x"[@t+1]
-      @t = -@t
-      @s += 1
-      @e = nil
-    end
+    @t, @s, @e, @b[pos] = -@t, @s+1, nil, "o x"[@t+1] if pos
     self
   end
   def unmove pos
-    if pos
-      @b[pos] = ' '
-      @t = -@t
-      @s -= 1
-      @e = nil
-    end
+    @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos
     self
   end
   def best_moves
@@ -79,7 +69,7 @@ class TicTacToe
   def main_loop
     last_mover = nil
     while evaluate == 0 && !possible_moves.empty? && (m = prompt) != 'q'
-      move(m.to_i) if != 's'
+      move(m.to_i) if m != 's'
       last_mover = :you
       b = best_moves
       if !b.empty?
