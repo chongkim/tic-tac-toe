@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 class TicTacToe
-  attr_accessor :board, :turn, :step
-
   def initialize row1="   ", row2="   ", row3="   "
     @board = "-" + row1 + row2 + row3 # the "-" is a dummy place holder so index starts at 1
     @turn = 1
@@ -12,7 +10,7 @@ class TicTacToe
   def show
     str = ""
     3.times do |i|
-      str += "#{board[3*i+1]}|#{board[3*i+2]}|#{board[3*i+3]}\n"
+      str += "#{@board[3*i+1]}|#{@board[3*i+2]}|#{@board[3*i+3]}\n"
       str += "------\n" unless i == 2
     end
     print str
@@ -20,39 +18,39 @@ class TicTacToe
   end
 
   def positions *list
-    list.map{|n| board[n]}.join
+    list.map{|n| @board[n]}.join
   end
 
   def prompt
     show
     puts "possible moves: #{possible_moves.inspect}"
     begin
-      skip_code_str = step == 0 ? ",s" : ""
-      skip_desc_str = step == 0 ? ", s-skip" : ""
+      skip_code_str = @step == 0 ? ",s" : ""
+      skip_desc_str = @step == 0 ? ", s-skip" : ""
       print "input [1-9,q#{skip_code_str}] (1 top-left, 9-lower-right, q-quit#{skip_desc_str}): "
       str = gets.chomp
-      break if str =~ /[1-9]/ && board[str.to_i] == ' '
+      break if str =~ /[1-9]/ && @board[str.to_i] == ' '
       break if str == 'q'
-      break if step == 0 && str == 's'
+      break if @step == 0 && str == 's'
     end while true
     str
   end
 
   def possible_moves
-    (1..9).map {|i| board[i] == ' ' ? i : nil}.compact
+    (1..9).map {|i| @board[i] == ' ' ? i : nil}.compact
   end
 
   def evaluate
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9), # across
              positions(1,4,7), positions(2,5,8), positions(3,6,9), # down
              positions(1,5,9), positions(3,5,7)] #diagonal
-    return  100-step if lines.any? {|line| line == "xxx" }
-    return -100+step if lines.any? {|line| line == "ooo" }
+    return  100-@step if lines.any? {|line| line == "xxx" }
+    return -100+@step if lines.any? {|line| line == "ooo" }
     return 0
   end
 
   def move pos
-    @board[pos] = turn == 1 ? "x" : "o"
+    @board[pos] = @turn == 1 ? "x" : "o"
     @turn = -@turn
     @step += 1
     self
