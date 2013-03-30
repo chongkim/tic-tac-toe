@@ -12,6 +12,7 @@ class TicTacToe
     str
   end
   def p *list; list.map{|n| @b[n]}.join; end
+  alias_method :positions, :p
   def prompt
     puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
