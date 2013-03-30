@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TicTacToe do
   it "should show initial position" do
-    TicTacToe.new.show.should == <<-EOF
+    TicTacToe.new.to_s.should == <<-EOF
  | | 
 ------
  | | 
@@ -14,11 +14,13 @@ EOF
   it "should prompt for input" do
     t = TicTacToe.new
     t.stub(:gets).and_return("2")
+    t.stub(:print)
+    t.stub(:puts)
     t.prompt.should == "2"
   end
 
   it "should set board" do
-    TicTacToe.new("xx ", "ox ", " oo").show.should == <<-EOF
+    TicTacToe.new("xx ", "ox ", " oo").to_s.should == <<-EOF
 x|x| 
 ------
 o|x| 

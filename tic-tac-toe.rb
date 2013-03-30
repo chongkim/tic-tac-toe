@@ -7,13 +7,12 @@ class TicTacToe
     @step = 0
   end
 
-  def show
+  def to_s
     str = ""
     3.times do |i|
       str += "#{@board[3*i+1]}|#{@board[3*i+2]}|#{@board[3*i+3]}\n"
       str += "------\n" unless i == 2
     end
-    print str
     str
   end
 
@@ -22,8 +21,7 @@ class TicTacToe
   end
 
   def prompt
-    show
-    puts "possible moves: #{possible_moves.inspect}"
+    puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
       skip_code_str = @step == 0 ? ",s" : ""
       skip_desc_str = @step == 0 ? ", s-skip" : ""
@@ -107,8 +105,7 @@ class TicTacToe
       end
     end
     if m != 'q'
-      show
-      puts evaluate == 0 ? "tie" : "Winner: #{last_mover}"
+      puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
     end
   end
 end
