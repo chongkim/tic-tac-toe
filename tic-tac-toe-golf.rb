@@ -1,38 +1,31 @@
 #!/usr/bin/env ruby
 class TicTacToe
   def initialize row1="   ", row2="   ", row3="   "
-    @b = "-" + row1 + row2 + row3
-    @t = 1
-    @s = 0
+    @t, @s, @b = 1, 0, "-" + row1 + row2 + row3
   end
-  def show
+  def to_s
     str = ""
     3.times do |i|
       str += "#{@b[3*i+1]}|#{@b[3*i+2]}|#{@b[3*i+3]}\n"
-      str += "------\n" unless i == 2
+      str += "------\n" if i != 2
     end
-    print str
     str
   end
   def positions *list
     list.map{|n| @b[n]}.join
   end
   def prompt
-    show
-    puts "possible moves: #{possible_moves.inspect}"
+    puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
       skip_code_str = @s == 0 ? ",s" : ""
       skip_desc_str = @s == 0 ? ", s-skip" : ""
       print "input [1-9,q#{skip_code_str}] (1 top-left, 9-lower-right, q-quit#{skip_desc_str}): "
       str = gets.chomp
-      break if str =~ /[1-9]/ && @b[str.to_i] == ' '
-      break if str == 'q'
-      break if @s == 0 && str == 's'
-    end while true
+    end while !(str =~ /[1-9]/ && @b[str.to_i] == ' ') && str != 'q' && !(@s == 0 && str == 's')
     str
   end
   def possible_moves
-    (1..9).map {|i| @b[i] == ' ' ? i : nil}.compact
+    (1..9).to_a.delete_if {|i| @b[i] != ' '}
   end
   def evaluate
     return @e if @e
@@ -46,7 +39,7 @@ class TicTacToe
   end
   def move pos
     if pos
-      @b[pos] = @t == 1 ? "x" : "o"
+      @b[pos] = "o x"[@t+1]
       @t = -@t
       @s += 1
       @e = nil
