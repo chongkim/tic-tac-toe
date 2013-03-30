@@ -52,45 +52,45 @@ class TicTacToe
   end
 
   def move pos
-    @board[pos] = @turn == 1 ? "x" : "o"
-    @turn = -@turn
-    @step += 1
-    @evaluate = nil
+    if pos
+      @board[pos] = @turn == 1 ? "x" : "o"
+      @turn = -@turn
+      @step += 1
+      @evaluate = nil
+    end
     self
   end
 
   def unmove pos
-    @board[pos] = ' '
-    @turn = -@turn
-    @step -= 1
-    @evaluate = nil
+    if pos
+      @board[pos] = ' '
+      @turn = -@turn
+      @step -= 1
+      @evaluate = nil
+    end
     self
   end
 
   def best_moves
-    possible_moves.map do |m|
-      move(m)
-      result = [deep_evaluate, m]
-      unmove(m)
-      result
-    end.sort { |a,b|
+    possible_moves.map {|m| [deep_evaluate(m), m] }.sort { |a,b|
       t = b[0] <=> a[0];                # sort by evaluation
       t = t == 0 ? a[1] <=> b[1] : t    # secondly by move
       t*@turn
     }.map{|e| e[1]}
   end
 
-  def deep_evaluate
+  def deep_evaluate m=nil
+    move(m)
     return evaluate if evaluate != 0
     return 0 if possible_moves.empty?
 
     values = []
     possible_moves.each do |m|
-      move(m)
-      values << deep_evaluate
-      unmove(m)
+      values << deep_evaluate(m)
     end
     return @turn < 0 ? values.min : values.max
+  ensure
+    unmove(m)
   end
 
   def main_loop
