@@ -16,4 +16,5 @@ RSpec.configure do |config|
   # config.order = 'random'
 end
 
-require_relative '../tic-tac-toe'
+require_relative '../tic-tac-toe-golf'
+# require_relative '../tic-tac-toe'
