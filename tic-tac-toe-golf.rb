@@ -2,7 +2,7 @@
 
 class TicTacToe
   def initialize row1="   ", row2="   ", row3="   "
-    @b = "-" + row1 + row2 + row3 # the "-" is a dummy place holder so index starts at 1
+    @b = "-" + row1 + row2 + row3
     @t = 1
     @s = 0
   end
@@ -41,8 +41,8 @@ class TicTacToe
   end
 
   def evaluate
-    lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9), # across
-             positions(1,4,7), positions(2,5,8), positions(3,6,9), # down
+    lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9),
+             positions(1,4,7), positions(2,5,8), positions(3,6,9),
              positions(1,5,9), positions(3,5,7)] #diagonal
     return  100-@s if lines.any? {|line| line == "xxx" }
     return -100+@s if lines.any? {|line| line == "ooo" }
@@ -71,8 +71,8 @@ class TicTacToe
       [e, m]
     end
     list.sort { |a,b|
-      t = b[0] <=> a[0];                # sort by evaluation
-      t = t == 0 ? a[1] <=> b[1] : t    # secondly by move
+      t = b[0] <=> a[0];
+      t = t == 0 ? a[1] <=> b[1] : t
       t*@t
     }.map{|e| e[1]}
   end
