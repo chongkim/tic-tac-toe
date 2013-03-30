@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 class TicTacToe
-  def initialize row1="   ", row2="   ", row3="   "
-    @t, @s, @b = 1, 0, "-" + row1 + row2 + row3
-  end
-  def to_s
-    @b[1..9].scan(/.../).map{|r| r.scan(/./).join('|')}.join("\n------\n") + "\n"
-  end
+  def initialize row1="   ", row2="   ", row3="   "; @t, @s, @b = 1, 0, "-" + row1 + row2 + row3; end
+  def to_s; @b[1..9].scan(/.../).map{|r| r.scan(/./).join('|')}.join("\n------\n") + "\n"; end
   def p *list; list.map{|n| @b[n]}.join; end
   alias_method :positions, :p
   def prompt
@@ -50,5 +46,4 @@ class TicTacToe
     puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{@last_mover}"}" if m != 'q'
   end
 end
-
 TicTacToe.new.main_loop if __FILE__ == $0
