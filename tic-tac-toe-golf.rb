@@ -11,9 +11,7 @@ class TicTacToe
     end
     str
   end
-  def positions *list
-    list.map{|n| @b[n]}.join
-  end
+  def p *list; list.map{|n| @b[n]}.join; end
   def prompt
     puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
@@ -24,13 +22,9 @@ class TicTacToe
     end while !(str =~ /[1-9]/ && @b[str.to_i] == ' ') && str != 'q' && !(@s == 0 && str == 's')
     str
   end
-  def possible_moves
-    (1..9).to_a.delete_if {|i| @b[i] != ' '}
-  end
+  def possible_moves; (1..9).to_a.delete_if {|i| @b[i] != ' '}; end
   def evaluate
-    lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9),
-             positions(1,4,7), positions(2,5,8), positions(3,6,9),
-             positions(1,5,9), positions(3,5,7)] #diagonal
+    lines = [p(1,2,3),p(4,5,6),p(7,8,9),p(1,4,7),p(2,5,8),p(3,6,9),p(1,5,9),p(3,5,7)]
     @e =  100-@s if @e.nil? && lines.any? {|line| line == "xxx" }
     @e = -100+@s if @e.nil? && lines.any? {|line| line == "ooo" }
     @e ||= 0
@@ -44,9 +38,7 @@ class TicTacToe
     @t, @s, @e, @b[pos] = -@t, @s-1, nil, ' ' if pos
     self
   end
-  def best_moves
-    possible_moves.map {|m| [deep_evaluate(m), m] }.sort{|a,b| (10*(b[0]<=>a[0])+(a[1]<=>b[1]))*@t}.map{|e| e[1]}
-  end
+  def best_moves; possible_moves.map {|m| [deep_evaluate(m), m] }.sort{|a,b| (10*(b[0]<=>a[0])+(a[1]<=>b[1]))*@t}.map{|e| e[1]}; end
   def deep_evaluate m=nil
     move(m)
     return evaluate if evaluate != 0
@@ -69,6 +61,5 @@ class TicTacToe
     puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}" if m != 'q'
   end
 end
-if __FILE__ == $0 then
-  TicTacToe.new.main_loop
-end
+
+TicTacToe.new.main_loop if __FILE__ == $0
