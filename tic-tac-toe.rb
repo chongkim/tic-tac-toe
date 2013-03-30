@@ -41,18 +41,21 @@ class TicTacToe
   end
 
   def evaluate
+    return @evaluate if @evaluate
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9), # across
              positions(1,4,7), positions(2,5,8), positions(3,6,9), # down
              positions(1,5,9), positions(3,5,7)] #diagonal
-    return  100-@step if lines.any? {|line| line == "xxx" }
-    return -100+@step if lines.any? {|line| line == "ooo" }
-    return 0
+    @evaluate =  100-@step if lines.any? {|line| line == "xxx" }
+    @evaluate = -100+@step if @evaluate.nil? && lines.any? {|line| line == "ooo" }
+    @evaluate ||= 0
+    return @evaluate
   end
 
   def move pos
     @board[pos] = @turn == 1 ? "x" : "o"
     @turn = -@turn
     @step += 1
+    @evaluate = nil
     self
   end
 
@@ -60,6 +63,7 @@ class TicTacToe
     @board[pos] = ' '
     @turn = -@turn
     @step -= 1
+    @evaluate = nil
     self
   end
 
@@ -77,8 +81,7 @@ class TicTacToe
   end
 
   def deep_evaluate
-    e = evaluate
-    return e if e != 0
+    return evaluate if evaluate != 0
     return 0 if possible_moves.empty?
 
     values = []
