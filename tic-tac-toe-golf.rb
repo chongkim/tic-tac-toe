@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 class TicTacToe
-  def initialize row1="   ", row2="   ", row3="   "; @t, @s, @b = 1, 0, "-" + row1 + row2 + row3; end
+  def initialize r1="   ", r2="   ", r3="   "; @t, @s, @b = 1, 0, "-" + r1 + r2 + r3; end
   def to_s; @b[1..9].scan(/.../).map{|r| r.scan(/./).join('|')}.join("\n------\n") + "\n"; end
   def p *list; list.map{|n| @b[n]}.join; end
   alias_method :positions, :p
@@ -8,14 +8,16 @@ class TicTacToe
     puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
       print "input [1-9,q#{[",s"][@s]}] (1 top-left, 9-lower-right, q-quit#{[", s-skip"][@s]}): "
-    end until (str=gets.chomp) =~ /[1-9]/ && @b[str.to_i] == ' ' || str == 'q' || @s == 0 && str == 's'
-    str
+    end until (s=gets.chomp) =~ /[1-9]/ && @b[s.to_i] == ' ' || s == 'q' || @s == 0 && s == 's'
+    s
   end
   def possible_moves; (1..9).to_a.delete_if {|i| @b[i] != ' '}; end
   def evaluate
-    lines = [p(1,2,3),p(4,5,6),p(7,8,9),p(1,4,7),p(2,5,8),p(3,6,9),p(1,5,9),p(3,5,7)]
-    @e =  100-@s if @e.nil? && lines.any? {|line| line == "xxx" }
-    @e = -100+@s if @e.nil? && lines.any? {|line| line == "ooo" }
+    [p(1,2,3),p(4,5,6),p(7,8,9),p(1,4,7),p(2,5,8),p(3,6,9),p(1,5,9),p(3,5,7)].each do |line|
+      @e =  100-@s if @e.nil? && line == "xxx"
+      @e = -100+@s if @e.nil? && line == "ooo"
+      return @e if @e
+    end
     @e ||= 0
     return @e
   end
