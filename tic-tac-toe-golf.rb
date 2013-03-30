@@ -45,14 +45,7 @@ class TicTacToe
     self
   end
   def best_moves
-    list = possible_moves.map do |m|
-      [deep_evaluate(m), m]
-    end
-    list.sort { |a,b|
-      t = b[0] <=> a[0];
-      t = t == 0 ? a[1] <=> b[1] : t
-      t*@t
-    }.map{|e| e[1]}
+    possible_moves.map {|m| [deep_evaluate(m), m] }.sort{|a,b| (10*(b[0]<=>a[0])+(a[1]<=>b[1]))*@t}.map{|e| e[1]}
   end
   def deep_evaluate m=nil
     move(m)
