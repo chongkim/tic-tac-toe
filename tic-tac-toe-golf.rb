@@ -8,8 +8,7 @@ class TicTacToe
     puts "#{to_s}possible moves: #{possible_moves.inspect}"
     begin
       print "input [1-9,q#{[",s"][@s]}] (1 top-left, 9-lower-right, q-quit#{[", s-skip"][@s]}): "
-      str = gets.chomp
-    end while (str !~ /[1-9]/ || @b[str.to_i] != ' ') && str != 'q' && (@s != 0 || str != 's')
+    end while ((str=gets.chomp) !~ /[1-9]/ || @b[str.to_i] != ' ') && str != 'q' && (@s != 0 || str != 's')
     str
   end
   def possible_moves; (1..9).to_a.delete_if {|i| @b[i] != ' '}; end
