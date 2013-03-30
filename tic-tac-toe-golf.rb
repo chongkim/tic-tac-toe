@@ -28,11 +28,10 @@ class TicTacToe
     (1..9).to_a.delete_if {|i| @b[i] != ' '}
   end
   def evaluate
-    return @e if @e
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9),
              positions(1,4,7), positions(2,5,8), positions(3,6,9),
              positions(1,5,9), positions(3,5,7)] #diagonal
-    @e =  100-@s if lines.any? {|line| line == "xxx" }
+    @e =  100-@s if @e.nil? && lines.any? {|line| line == "xxx" }
     @e = -100+@s if @e.nil? && lines.any? {|line| line == "ooo" }
     @e ||= 0
     return @e
@@ -80,17 +79,16 @@ class TicTacToe
   def main_loop
     last_mover = nil
     while evaluate == 0 && !possible_moves.empty? && (m = prompt) != 'q'
-      move(m.to_i) unless m == 's'
+      move(m.to_i) if != 's'
       last_mover = :you
       b = best_moves
-      unless b.empty?
+      if !b.empty?
         move(b[0])
         last_mover = :computer
       end
     end
     if m != 'q'
-      show
-      puts evaluate == 0 ? "tie" : "Winner: #{last_mover}"
+      puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
     end
   end
 end
