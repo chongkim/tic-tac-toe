@@ -51,11 +51,7 @@ class TicTacToe
     move(m)
     return evaluate if evaluate != 0
     return 0 if possible_moves.empty?
-    values = []
-    possible_moves.each do |m|
-      values << deep_evaluate(m)
-    end
-    return @t < 0 ? values.min : values.max
+    possible_moves.map {|m| deep_evaluate(m) }.send(@t < 0 ? :min : :max)
   ensure
     unmove(m)
   end
