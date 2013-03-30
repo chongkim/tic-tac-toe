@@ -77,9 +77,7 @@ class TicTacToe
         last_mover = :computer
       end
     end
-    if m != 'q'
-      puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
-    end
+    puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}" if m != 'q'
   end
 end
 if __FILE__ == $0 then
