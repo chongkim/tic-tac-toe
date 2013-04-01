@@ -5,6 +5,8 @@ class TicTacToe
     @board = "-" + row1 + row2 + row3 # the "-" is a dummy place holder so index starts at 1
     @turn = 1
     @step = 0
+    @possible_moves = nil
+    @move_list = []
   end
 
   def to_s
@@ -17,6 +19,7 @@ class TicTacToe
   end
 
   def positions *list
+    list=(1..9).to_a if list.empty?
     list.map{|n| @board[n]}.join
   end
 
@@ -35,14 +38,22 @@ class TicTacToe
   end
 
   def possible_moves
-    (1..9).map {|i| @board[i] == ' ' ? i : nil}.compact
+    return @possible_moves if @possible_moves
+    list = (1..9).map {|i| @board[i] == ' ' ? i : nil}.compact
+    @possible_moves = []
+    s = symmetries
+    list.each do |m|
+      new_m = s.map{|trans| transform(m, trans)}.sort[0]
+      @possible_moves << new_m if !@possible_moves.include?(new_m)
+    end
+    @possible_moves
   end
 
   def evaluate
     return @evaluate if @evaluate
     lines = [positions(1,2,3), positions(4,5,6), positions(7,8,9), # across
              positions(1,4,7), positions(2,5,8), positions(3,6,9), # down
-             positions(1,5,9), positions(3,5,7)] #diagonal
+             positions(1,5,9), positions(3,5,7)] # diagonal
     @evaluate =  100-@step if lines.any? {|line| line == "xxx" }
     @evaluate = -100+@step if @evaluate.nil? && lines.any? {|line| line == "ooo" }
     @evaluate ||= 0
@@ -55,6 +66,8 @@ class TicTacToe
       @turn = -@turn
       @step += 1
       @evaluate = nil
+      @possible_moves = nil
+      @move_list << pos
     end
     self
   end
@@ -65,6 +78,8 @@ class TicTacToe
       @turn = -@turn
       @step -= 1
       @evaluate = nil
+      @possible_moves = nil
+      @move_list.pop
     end
     self
   end
@@ -108,8 +123,76 @@ class TicTacToe
       puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
     end
   end
+
+  def to_xy pos
+    i = pos-1
+    ix = i%3
+    iy = i/3
+    [ix-1,1-iy]
+  end
+
+  def from_xy *coord
+    (coord[0]+1 + (1-coord[1])*3) + 1
+  end
+
+  # these are just simple matrix transformations
+  def transform pos, trans
+    ix, iy = to_xy(pos)
+    case trans
+    when :r1
+      # [1 0]
+      # [0 1]  identity so don't do anything
+      pos
+
+    when :r2
+      # [0 -1][ix]   [-iy]
+      # [1  0][iy] = [ ix]
+      from_xy(-iy, ix)
+
+    when :r3
+      # [-1  0][ix]   [-ix]
+      # [ 0 -1][iy] = [-iy]
+      from_xy(-ix, -iy)
+
+    when :r4
+      # [ 0 1][ix]   [ iy]
+      # [-1 0][iy] = [-ix]
+      from_xy(iy, -ix)
+
+    when :h
+      # [1  0][ix]   [ ix]
+      # [0 -1][iy] = [-iy]
+      from_xy(ix, -iy)
+    when :v
+      # [-1 0][ix]   [-ix]
+      # [ 0 1][iy] = [ iy]
+      from_xy(-ix, iy)
+    when :d1
+      # [ 0 -1][ix]   [-iy]
+      # [-1  0][iy] = [-ix]
+      from_xy(-iy, -ix)
+    when :d2
+      # [0 1][ix]   [iy]
+      # [1 0][iy] = [ix]
+      from_xy(iy, ix)
+    else
+      raise "don't understand #{trans}"
+    end
+  end
+
+  def transform_board trans
+    test_board = "-"+" "*9
+    (1..9).each do |pos|
+      test_board[transform(pos, trans)] = @board[pos]
+    end
+    test_board
+  rescue
+    raise
+  end
+
+  def symmetries
+    [:r1, :r2, :r3, :r4, :h, :v, :d1, :d2].delete_if { |trans| r = transform_board(trans) != @board }
+  end
 end
 
-if __FILE__ == $0 then
-  TicTacToe.new.main_loop
-end
+TicTacToe.new.main_loop if __FILE__ == $0

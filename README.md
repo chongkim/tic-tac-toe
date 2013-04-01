@@ -3,6 +3,10 @@ tic-tac-toe
 
 An unbeatable command line Tic Tac Toe program.  When it initially starts, it will take a few seconds to make a move because it is calculating all possible moves to find the best move.
 
+Features
+========
+* Recognizes symmetries and filters out redundant moves.
+
 Example run
 ===========
 ```
