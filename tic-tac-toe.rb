@@ -29,7 +29,7 @@ class TicTacToe
     list.map{|n| @board[n]}
   end
 
-  def prompt
+  def prompt_for_move
     puts "#{to_s}"
     begin
       print "input [1-9,q] (1 top-left, 9-lower-right, q-quit): "
@@ -158,30 +158,41 @@ class TicTacToe
     puts
   end
 
+  def prompt_for_new_game
+    begin
+      print "Do you want to play again? [y,n]: "
+      ans = gets.chomp
+    end until ans == 'y' || ans == 'n'
+    ans
+  end
+
   def main_loop
+    puts "Welcome to TicTacToe"
     catch (:quit) do
-      puts "Welcome to TicTacToe"
-      last_mover = nil
-      if prompt_who_goes_first == :computer then
-        start_show_thinking
-        move(best_moves.first)
-        stop_show_thinking
-        last_mover = :computer
-      end
-
-      while evaluate == 0 && !possible_moves.empty?
-        m = prompt
-        move(m.to_i) unless m == 's'
-        last_mover = :you
-
-        if has_open_space?
+      begin
+        last_mover = nil
+        if prompt_who_goes_first == :computer then
           start_show_thinking
           move(best_moves.first)
           stop_show_thinking
           last_mover = :computer
         end
-      end
-      puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
+
+        while evaluate == 0 && !possible_moves.empty?
+          m = prompt_for_move
+          move(m.to_i) unless m == 's'
+          last_mover = :you
+
+          if has_open_space?
+            start_show_thinking
+            move(best_moves.first)
+            stop_show_thinking
+            last_mover = :computer
+          end
+        end
+        puts "#{to_s}#{evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
+        initialize
+      end until prompt_for_new_game == 'n'
     end
   end
 

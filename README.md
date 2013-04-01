@@ -60,27 +60,5 @@ input [1-9,q] (1 top-left, 9-lower-right, q-quit): 8
                     -----------
                      x | x | o
 tie
+Do you want to play again? [y,n]: n
 euler:tic-tac-toe ckim$```
-
-TODO
-====
-- Ask the player if who should move first.
-* Give an indication that the computer is thinking.
-* Put place holders so player knows where to move.
-* Ask the user at the end of the game if they want to play again.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

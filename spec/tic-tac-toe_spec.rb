@@ -16,7 +16,7 @@ EOF
     t.stub(:gets).and_return("2")
     t.stub(:print)
     t.stub(:puts)
-    t.prompt.should == "2"
+    t.prompt_for_move.should == "2"
   end
 
   it "should set board" do
@@ -114,7 +114,7 @@ EOF
       TicTacToe.new.symmetries.should == [:r1, :r2, :r3, :r4, :h, :v, :d1, :d2]
       TicTacToe.new("   ", " x ", "   ").symmetries.should == [:r1, :r2, :r3, :r4, :h, :v, :d1, :d2]
     end
-    it "should find rotation 0 degrees (this is identity" do
+    it "should find rotation 0 degrees (this is identity)" do
       TicTacToe.new("xxo", "xo ", " o ").symmetries.should == [:r1]
     end
     it "should find rotation 90 degrees" do
