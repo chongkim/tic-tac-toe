@@ -3,11 +3,11 @@ require 'spec_helper'
 describe TicTacToe do
   it "should show initial position" do
     TicTacToe.new.to_s.should == <<-EOF
- | | 
-------
- | | 
-------
- | | 
+                     \e[30;1m1\e[0m | \e[30;1m2\e[0m | \e[30;1m3\e[0m
+                    -----------
+                     \e[30;1m4\e[0m | \e[30;1m5\e[0m | \e[30;1m6\e[0m
+                    -----------
+                     \e[30;1m7\e[0m | \e[30;1m8\e[0m | \e[30;1m9\e[0m
 EOF
   end
   
@@ -21,18 +21,18 @@ EOF
 
   it "should set board" do
     TicTacToe.new("xx ", "ox ", " oo").to_s.should == <<-EOF
-x|x| 
-------
-o|x| 
-------
- |o|o
-    EOF
+                     x | x | \e[30;1m3\e[0m
+                    -----------
+                     o | x | \e[30;1m6\e[0m
+                    -----------
+                     \e[30;1m7\e[0m | o | o
+EOF
   end
 
   it "should come up with a list of possible moves" do
-    TicTacToe.new("   ", "   ", "   ").possible_moves.should == [1,2,5]
-    TicTacToe.new("xo ", " x ", "  o").possible_moves.should == [3,4,6,7,8]
-    TicTacToe.new("xxo", " ox", "oxo").possible_moves.should == [4]
+    TicTacToe.new("   ", "   ", "   ").possible_moves_minus_symmetry.should == [1,2,5]
+    TicTacToe.new("xo ", " x ", "  o").possible_moves_minus_symmetry.should == [3,4,6,7,8]
+    TicTacToe.new("xxo", " ox", "oxo").possible_moves_minus_symmetry.should == [4]
   end
 
   it "should evaluate a win" do
@@ -67,7 +67,7 @@ o|x|
   end
 
   it "should handle a move" do
-    t = TicTacToe.new("   ", "   ", "   ").move(1).positions.should == "x        "
+    t = TicTacToe.new("   ", "   ", "   ").move(1).positions.should == "x        ".scan(/./)
   end
 
   it "should do a deep evaluate" do
