@@ -20,7 +20,9 @@ class Board
   end
 
   def initialize row1="   ", row2="   ", row3="   "
-    @data = "-" + row1 + row2 + row3 # the "-" is a dummy place holder so index starts at 1
+     # the "-" is a dummy place holder so index starts at 1
+    @data = ("-" + row1 + row2 + row3).chars.to_a
+
     @indent = 20
     @turn = 1
     @step = 0
