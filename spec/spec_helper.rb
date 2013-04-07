@@ -16,6 +16,6 @@ RSpec.configure do |config|
   # config.order = 'random'
 end
 
-require 'pry'
-# require_relative '../tic-tac-toe-golf'
-require_relative '../tic-tac-toe'
+$LOAD_PATH << File.expand_path("../../../lib", __FILE__)
+
+require 'tic-tac-toe'
