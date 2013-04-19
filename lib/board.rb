@@ -31,8 +31,7 @@ class Board
   end
 
   def cell_string pos
-    cell = self[pos]
-    cell == ' ' ? "\x1b[30;1m#{pos}\x1b[0m" : cell
+    self[pos] == ' ' ? pos : self[pos]
   end
 
   def to_s
