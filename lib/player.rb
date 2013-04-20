@@ -1,8 +1,10 @@
 #!/usr/bin/env ruby
 
 class Player
-  def initialize board
+  attr_accessor :name
+  def initialize board, name=""
     @board = board
+    @name = name
   end
 end
 
@@ -42,7 +44,7 @@ class ComputerPlayer < Player
 
   def move
     start_show_thinking
-    @board.move(best_move)
+    @board.move(@board.best_moves.first)
     stop_show_thinking
   end
 end

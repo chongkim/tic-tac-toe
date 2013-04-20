@@ -4,7 +4,7 @@ def play player_choice, input_list=nil, best_moves=nil, play_again=nil
   t = TicTacToe.new
   t.stub(:gets).and_return(*[player_choice, play_again].compact)
   t.human_player.stub(:gets).and_return(*input_list) if input_list
-  t.computer_player.stub(:best_move).and_return(*best_moves) if best_moves
+  t.board.stub(:best_moves).and_return(*best_moves.map{|e| [e]}) if best_moves
   t.computer_player.stub(:print)
   t.computer_player.stub(:puts)
   t.human_player.stub(:print)

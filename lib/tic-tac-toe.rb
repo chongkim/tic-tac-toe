@@ -4,12 +4,12 @@ require 'board'
 require 'player'
 
 class TicTacToe
-  attr_accessor :human_player, :computer_player
+  attr_accessor :human_player, :computer_player, :board
 
   def initialize row1="   ", row2="   ", row3="   "
     @board = Board.new row1, row2, row3
-    @human_player = HumanPlayer.new(@board)
-    @computer_player = ComputerPlayer.new(@board)
+    @human_player = HumanPlayer.new(@board, "You")
+    @computer_player = ComputerPlayer.new(@board, "Computer")
   end
 
   def to_s
@@ -53,14 +53,14 @@ class TicTacToe
     puts "Welcome to TicTacToe"
     catch (:quit) do
       begin
-        player1, player2 = prompt_who_goes_first
-
+        players = prompt_who_goes_first
+        player_index = 1
         while @board.evaluate == 0 && !@board.possible_moves.empty?
-          player1.move
-          player2.move if !@board.possible_moves.empty?
+          player_index = 1 - player_index
+          players[player_index].move
         end
 
-        puts "#{to_s}#{@board.evaluate == 0 ? "tie" : "Winner: #{last_mover}"}"
+        puts "#{to_s}#{@board.evaluate == 0 ? "tie" : "Winner: #{players[player_index].name}"}"
         initialize
       end until prompt_for_new_game == 'n'
     end
