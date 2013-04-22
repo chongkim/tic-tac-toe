@@ -48,7 +48,7 @@ describe Board do
     it "should handle a move" do
       t = Board.new("   ", "   ", "   ")
       t.move(1)
-      (1..9).map{|pos| t[pos] }.should == "x        ".scan(/./)
+      (1..9).map{|pos| t[pos] }.should == "x        ".chars.map(&:to_sym)
     end
   end
 
@@ -115,7 +115,7 @@ describe Board do
   end
     
   context "#best_moves" do
-    it "should come up with best moves" do
+    it "should come up with best moves for simple win" do
       Board.new("xx ", "oo ", "   ").best_moves.should == [3,6,7,8,9]
       Board.new("xo ", "ox ", "   ").best_moves.should == [9,3,6]
     end

@@ -21,7 +21,7 @@ class Board
 
   def initialize row1="   ", row2="   ", row3="   "
      # the "-" is a dummy place holder so index starts at 1
-    @data = ("-" + row1 + row2 + row3).chars.to_a
+    @data = ("-" + row1 + row2 + row3).chars.map(&:to_sym)
 
     @indent = 20
     @turn = 1
@@ -31,7 +31,7 @@ class Board
   end
 
   def cell_string pos
-    self[pos] == ' ' ? pos : self[pos]
+    self[pos] == :' ' ? pos : self[pos]
   end
 
   def to_s
@@ -44,7 +44,7 @@ class Board
   end
 
   def possible_moves
-    @possible_moves ||= (1..9).to_a.keep_if {|i| @data[i] == ' ' }
+    @possible_moves ||= (1..9).to_a.keep_if {|i| @data[i] == :' ' }
   end
 
   def evaluate
@@ -54,8 +54,8 @@ class Board
              [1,5,9], [3,5,7]] # diagonal
     lines.each do |line|
       sequence = line.map{|pos| @data[pos]}
-      return (@evaluate =  100-@step) if sequence == ["x","x","x"]
-      return (@evaluate = -100+@step) if sequence == ["o","o","o"]
+      return (@evaluate =  100-@step) if sequence == [:x,:x,:x]
+      return (@evaluate = -100+@step) if sequence == [:o,:o,:o]
     end
     @evaluate = 0
     return @evaluate
@@ -63,7 +63,7 @@ class Board
 
   def move pos
     if pos
-      @data[pos] = @turn == 1 ? "x" : "o"
+      @data[pos] = @turn == 1 ? :x : :o
       @turn = -@turn
       @step += 1
       @move_list << pos
@@ -73,7 +73,7 @@ class Board
 
   def unmove pos
     if pos
-      @data[pos] = ' '
+      @data[pos] = :' '
       @turn = -@turn
       @step -= 1
       @move_list.pop
@@ -108,7 +108,11 @@ class Board
   end
 
   def has_open_space?
-    @data.index(' ')
+    @data.index(:' ')
+  end
+
+  def space? pos
+    @data[pos] == :' '
   end
 
   def transform trans, pos

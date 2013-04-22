@@ -15,7 +15,7 @@ class HumanPlayer < Player
       print "input [1-9,q] (1 top-left, 9-lower-right, q-quit): "
       str = gets.chomp
       throw :quit if str == 'q'
-    end until str =~ /[1-9]/ && @board[str.to_i] == ' '
+    end until str =~ /[1-9]/ && @board.space?(str.to_i)
     str
   end
 
