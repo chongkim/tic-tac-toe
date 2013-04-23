@@ -1,5 +1,8 @@
 source "https://rubygems.org"
 
-gem "rspec"
-gem "debugger"
-gem 'ruby-prof'
+group :test do
+  gem "rspec"
+  gem "debugger"
+  gem 'ruby-prof'
+  gem 'simplecov'
+end

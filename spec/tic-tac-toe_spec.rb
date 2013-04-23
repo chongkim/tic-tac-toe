@@ -1,12 +1,13 @@
 require 'spec_helper'
+require 'tic-tac-toe'
 
 def play player_choice, input_list=nil, best_moves=nil, play_again=nil
   t = TicTacToe.new
   t.stub(:gets).and_return(*[player_choice, play_again].compact)
   t.human_player.stub(:gets).and_return(*input_list) if input_list
-  t.board.stub(:best_moves).and_return(*best_moves.map{|e| [e]}) if best_moves
-  t.computer_player.stub(:print)
-  t.computer_player.stub(:puts)
+  # t.computer_player.stub(:print)
+  # t.computer_player.stub(:puts)
+  # t.computer_player.stub(:possible_moves).and_return(*best_moves.map{|e| [e]}) if best_moves
   t.human_player.stub(:print)
   t.human_player.stub(:puts)
   t.stub(:print)
@@ -17,7 +18,9 @@ end
 describe TicTacToe do
   context "#to_s" do
     it "should show initial position" do
-      TicTacToe.new.to_s.should == <<-EOF
+      t = TicTacToe.new
+      t.board.inspect.should == "   /   /   "
+      t.board.to_s.should == <<-EOF
                      1 | 2 | 3
                     -----------
                      4 | 5 | 6
@@ -29,7 +32,9 @@ EOF
 
   context "#initialize" do
     it "should set board" do
-      TicTacToe.new("xx ", "ox ", " oo").to_s.should == <<-EOF
+      t = TicTacToe.new("xx /ox / oo")
+      t.board.inspect == "xx /ox / oo"
+      t.board.to_s.should == <<-EOF
                      x | x | 3
                     -----------
                      o | x | 6

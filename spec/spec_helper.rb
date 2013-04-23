@@ -18,4 +18,6 @@ end
 
 $LOAD_PATH << File.expand_path("../../../lib", __FILE__)
 
-require 'tic-tac-toe'
+require 'simplecov'
+
+SimpleCov.start

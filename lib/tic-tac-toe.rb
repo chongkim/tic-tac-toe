@@ -1,19 +1,16 @@
 #!/usr/bin/env ruby
 
 require 'board'
-require 'player'
+require 'human_player'
+require 'computer_player'
 
 class TicTacToe
   attr_accessor :human_player, :computer_player, :board
 
-  def initialize row1="   ", row2="   ", row3="   "
-    @board = Board.new row1, row2, row3
+  def initialize position="   /   /   "
+    @board = Board.new position
     @human_player = HumanPlayer.new(@board, "You")
     @computer_player = ComputerPlayer.new(@board, "Computer")
-  end
-
-  def to_s
-    @board.to_s
   end
 
   def prompt_who_goes_first
@@ -45,10 +42,6 @@ class TicTacToe
     ans
   end
 
-  def best_move
-    @board.best_moves.first
-  end
-
   def main_loop
     puts "Welcome to TicTacToe"
     catch (:quit) do
@@ -60,7 +53,7 @@ class TicTacToe
           players[player_index].move
         end
 
-        puts "#{to_s}#{@board.evaluate == 0 ? "tie" : "Winner: #{players[player_index].name}"}"
+        puts "#{board.to_s}#{@board.evaluate == 0 ? "tie" : "Winner: #{players[player_index].name}"}"
         initialize
       end until prompt_for_new_game == 'n'
     end
