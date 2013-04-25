@@ -4,10 +4,10 @@ class HumanPlayer < Player
   def prompt_for_move
     puts "#{@board.to_s}"
     begin
-      print "input [1-9,q] (1 top-left, 9-lower-right, q-quit): "
+      print "input [0-8,q] (q-quit): "
       str = gets.chomp
       throw :quit if str == 'q'
-    end until str =~ /[1-9]/ && @board.space?(str.to_i)
+    end until str =~ /[0-8]/ && @board.space?(str.to_i)
     str
   end
 

@@ -15,7 +15,7 @@ describe HumanPlayer do
   context "#move" do
     it "should make a move on an empty board" do
       human_player = HumanPlayer.new(Board.new)
-      human_player.stub(:prompt_for_move).and_return("2")
+      human_player.stub(:prompt_for_move).and_return("1")
 
       human_player.move
 

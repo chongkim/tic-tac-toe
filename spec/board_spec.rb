@@ -5,17 +5,17 @@ describe Board do
   context "#move" do
     it "should handle a move" do
       board = Board.new("   /   /   ")
-      board.move(1)
+      board.move(0)
       board.inspect.should == "x  /   /   "
     end
   end
 
   context "#possible_moves" do
     it "should come up with moves for initial position" do
-      Board.new("   /   /   ").possible_moves.should == [1,2,3,4,5,6,7,8,9]
+      Board.new("   /   /   ").possible_moves.should == [0,1,2,3,4,5,6,7,8]
     end
     it "should come up with moves as second player" do
-      Board.new("   / x /   ").possible_moves.should == [1,2,3,4,6,7,8,9]
+      Board.new("   / x /   ").possible_moves.should == [0,1,2,3,5,6,7,8]
     end
   end
 

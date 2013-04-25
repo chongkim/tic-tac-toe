@@ -1,17 +1,18 @@
 require 'player'
+require 'board'
 
 class ComputerPlayer < Player
   attr_reader :board
 
   TRANS_MAP = {
-    :r1 => [nil, 1,2,3, 4,5,6, 7,8,9],
-    :r2 => [nil, 7,4,1, 8,5,2, 9,6,3],
-    :r3 => [nil, 9,8,7, 6,5,4, 3,2,1],
-    :r4 => [nil, 3,6,9, 2,5,8, 1,4,7],
-    :h => [nil, 7,8,9, 4,5,6, 1,2,3],
-    :v => [nil, 3,2,1, 6,5,4, 9,8,7],
-    :d1 => [nil, 1,4,7, 2,5,8, 3,6,9],
-    :d2 => [nil, 9,6,3, 8,5,2, 7,4,1]
+    :r1 => [0,1,2, 3,4,5, 6,7,8],
+    :r2 => [6,3,0, 7,4,1, 8,5,2],
+    :r3 => [8,7,6, 5,4,3, 2,1,0],
+    :r4 => [2,5,8, 1,4,7, 0,3,6],
+    :h => [6,7,8, 3,4,5, 0,1,2],
+    :v => [2,1,0, 5,4,3, 8,7,6],
+    :d1 => [0,3,6, 1,4,7, 2,5,8],
+    :d2 => [8,5,2, 7,4,1, 6,3,0]
   }
 
   def initialize *args
@@ -73,7 +74,7 @@ class ComputerPlayer < Player
   end
 
   def symmetric? trans
-    (1..9).all? { |pos| @board[pos] == @board[transform(trans, pos)] }
+    (0..8).all? { |pos| @board[pos] == @board[transform(trans, pos)] }
   end
 
   def symmetries

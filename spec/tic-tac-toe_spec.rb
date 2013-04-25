@@ -1,13 +1,10 @@
 require 'spec_helper'
 require 'tic-tac-toe'
 
-def play player_choice, input_list=nil, best_moves=nil, play_again=nil
+def play player_choice, input_list=nil, play_again=nil
   t = TicTacToe.new
   t.stub(:gets).and_return(*[player_choice, play_again].compact)
   t.human_player.stub(:gets).and_return(*input_list) if input_list
-  # t.computer_player.stub(:print)
-  # t.computer_player.stub(:puts)
-  # t.computer_player.stub(:possible_moves).and_return(*best_moves.map{|e| [e]}) if best_moves
   t.human_player.stub(:print)
   t.human_player.stub(:puts)
   t.stub(:print)
@@ -21,11 +18,11 @@ describe TicTacToe do
       t = TicTacToe.new
       t.board.inspect.should == "   /   /   "
       t.board.to_s.should == <<-EOF
-                     1 | 2 | 3
+                     0 | 1 | 2
                     -----------
-                     4 | 5 | 6
+                     3 | 4 | 5
                     -----------
-                     7 | 8 | 9
+                     6 | 7 | 8
 EOF
     end
   end
@@ -35,11 +32,11 @@ EOF
       t = TicTacToe.new("xx /ox / oo")
       t.board.inspect == "xx /ox / oo"
       t.board.to_s.should == <<-EOF
-                     x | x | 3
+                     x | x | 2
                     -----------
-                     o | x | 6
+                     o | x | 5
                     -----------
-                     7 | o | o
+                     6 | o | o
 EOF
     end
   end
@@ -54,18 +51,18 @@ EOF
     end
       
     it "should start a game select (1) You, move 1, and quit" do
-      play("1", ["1", "q"], [2])
+      play("1", ["1", "q"])
     end
     
     it "should start a game select (2) Computer and quit" do
-      play("2", ["q"], [1])
+      play("2", ["q"])
     end
 
     it "should play a complete game" do
       play("1", # I go first
-        ["1", "9", "8", "3", "4"], # human moves
-        [ 5,   2,   7,   6],
-        "n") # computer moves
+        ["0", "8", "7", "2", "3"], # human moves
+        "n")
+        # expected computer moves: [4,1,6,5]
     end
   end
 end

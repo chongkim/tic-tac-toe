@@ -49,28 +49,28 @@ describe ComputerPlayer do
 
   context "#symmetry_equivalent_classes" do
     it "should find symmetry equivalent classes" do
-      ComputerPlayer.new(Board.new).symmetry_equivalent_classes.map(&:sort).should == [[1,3,7,9],[2,4,6,8],[5]]
+      ComputerPlayer.new(Board.new).symmetry_equivalent_classes.map(&:sort).should == [[0,2,6,8],[1,3,5,7],[4]]
     end
   end
 
   context "#possible_moves_minus_symmetry" do
     it "should come up with a list of possible moves minus symmetry" do
-      ComputerPlayer.new(Board.new("   /   /   ")).possible_moves_minus_symmetry.should == [1,2,5]
-      ComputerPlayer.new(Board.new("xo / x /  o")).possible_moves_minus_symmetry.should == [3,4,6,7,8]
-      ComputerPlayer.new(Board.new("xxo/ ox/oxo")).possible_moves_minus_symmetry.should == [4]
-      ComputerPlayer.new(Board.new("   / x /   ")).possible_moves_minus_symmetry.should == [1,2]
-      ComputerPlayer.new(Board.new("x  /   /   ")).possible_moves_minus_symmetry.should == [2,3,5,6,9]
+      ComputerPlayer.new(Board.new("   /   /   ")).possible_moves_minus_symmetry.should == [0,1,4]
+      ComputerPlayer.new(Board.new("xo / x /  o")).possible_moves_minus_symmetry.should == [2,3,5,6,7]
+      ComputerPlayer.new(Board.new("xxo/ ox/oxo")).possible_moves_minus_symmetry.should == [3]
+      ComputerPlayer.new(Board.new("   / x /   ")).possible_moves_minus_symmetry.should == [0,1]
+      ComputerPlayer.new(Board.new("x  /   /   ")).possible_moves_minus_symmetry.should == [1,2,4,5,8]
     end
   end
     
   context "#best_moves" do
     it "should come up with best moves for simple win" do
-      ComputerPlayer.new(Board.new("xx /oo /   ")).best_moves.should == [3,6,7,8,9]
-      ComputerPlayer.new(Board.new("xo /ox /   ")).best_moves.should == [9,3,6]
+      ComputerPlayer.new(Board.new("xx /oo /   ")).best_moves.should == [2,5,6,7,8]
+      ComputerPlayer.new(Board.new("xo /ox /   ")).best_moves.should == [8,2,5]
     end
 
     it "should come up with best moves with deep evaluation" do
-      ComputerPlayer.new(Board.new("xo /o  /x  ")).best_moves.should == [5,9,6,8,3]
+      ComputerPlayer.new(Board.new("xo /o  /x  ")).best_moves.should == [4,8,5,7,2]
     end
   end
 end
