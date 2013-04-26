@@ -78,12 +78,8 @@ class Board
   end
 
   def check_for_win
-<<<<<<< HEAD
-    last_piece = piece == :x ? :o : :x
-=======
     last_move = @move_list.last
     last_piece = piece == :X ? :O : :X
->>>>>>> memoized_position
     row = last_move / 3
     col = last_move % 3
     line = (0..2).to_a

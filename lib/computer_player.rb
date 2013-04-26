@@ -17,15 +17,12 @@ class ComputerPlayer < Player
 
   def initialize *args
     super(*args)
-<<<<<<< HEAD
-=======
     @semaphore = Mutex.new
     reset_memo
   end
 
   def reset_memo
     @memoized_position = {}
->>>>>>> memoized_position
   end
 
   def start_show_thinking
