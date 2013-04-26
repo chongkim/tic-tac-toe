@@ -41,7 +41,7 @@ EOF
     end
   end
 
-  context "play a game" do
+  context "#main_loop" do
     it "should start a game and quit" do
       play("q")
     end
@@ -63,6 +63,19 @@ EOF
         ["0", "8", "7", "2", "3"], # human moves
         "n")
         # expected computer moves: [4,1,6,5]
+    end
+  end
+
+  context "play a game" do
+    it "should win if I let it win" do
+      board = Board.new
+      computer_player = ComputerPlayer.new(board)
+
+      computer_player.move.should == 0
+      board.move(1)
+      computer_player.move.should == 3
+      board.move(4)
+      computer_player.move.should == 6
     end
   end
 end

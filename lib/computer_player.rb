@@ -17,11 +17,6 @@ class ComputerPlayer < Player
 
   def initialize *args
     super(*args)
-    reset_memo
-  end
-
-  def reset_memo
-    @symmetries = nil
   end
 
   def start_show_thinking
@@ -45,10 +40,12 @@ class ComputerPlayer < Player
     @thinking_thread.join
   end
 
+  # makes a move and returns the move
   def move
     start_show_thinking
     @board.move(best_moves.first)
     stop_show_thinking
+    board.last_move
   end
 
   def best_moves
@@ -78,7 +75,7 @@ class ComputerPlayer < Player
   end
 
   def symmetries
-    @symmetries ||= TRANS_MAP.keys.keep_if { |trans| symmetric?(trans) }
+    TRANS_MAP.keys.keep_if { |trans| symmetric?(trans) }
   end
 
   # see symmetries of current board e.g. rot2

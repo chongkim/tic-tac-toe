@@ -32,6 +32,7 @@ class Board
     @possible_moves = nil
     @piece = nil
     @has_win = nil
+    @last_move = nil
   end
 
   def inspect
@@ -71,8 +72,11 @@ class Board
     @piece ||= @turn == 1 ? :x : :o
   end
 
+  def last_move
+    @last_move ||= @move_list.last
+  end
+
   def check_for_win
-    last_move = @move_list.last
     last_piece = piece == :x ? :o : :x
     row = last_move / 3
     col = last_move % 3
