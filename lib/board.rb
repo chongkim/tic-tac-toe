@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'piece'
 
 class Board
 
@@ -6,7 +7,7 @@ class Board
 
   def initialize position="   /   /   "
      # the "-" is a dummy place holder so index starts at 1
-    @data = position.delete("/").chars.map(&:to_sym)
+    @data = position.delete("/").chars.map{|char| Piece.new(char) }
     @indent = 20
     @turn = 1
     @step = 0
@@ -21,8 +22,8 @@ class Board
              [0,4,8], [2,4,6]] # diagonal
     lines.each do |line|
       sequence = line.map{|pos| @data[pos]}
-      return (@evaluate =  100-@step) if sequence == [:x,:x,:x]
-      return (@evaluate = -100+@step) if sequence == [:o,:o,:o]
+      return (@evaluate =  100-@step) if sequence == [:X,:X,:X]
+      return (@evaluate = -100+@step) if sequence == [:O,:O,:O]
     end
     return @evaluate = nil
   end
@@ -69,7 +70,7 @@ class Board
   end
 
   def piece
-    @piece ||= @turn == 1 ? :x : :o
+    @piece ||= @turn == 1 ? :X : :O
   end
 
   def last_move
@@ -77,7 +78,12 @@ class Board
   end
 
   def check_for_win
+<<<<<<< HEAD
     last_piece = piece == :x ? :o : :x
+=======
+    last_move = @move_list.last
+    last_piece = piece == :X ? :O : :X
+>>>>>>> memoized_position
     row = last_move / 3
     col = last_move % 3
     line = (0..2).to_a
