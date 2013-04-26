@@ -19,7 +19,7 @@ describe HumanPlayer do
 
       human_player.move
 
-      human_player.board.inspect.should == " x /   /   "
+      human_player.board.inspect.should == " X /   /   "
     end
   end
 end

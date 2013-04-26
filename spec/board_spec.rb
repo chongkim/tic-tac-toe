@@ -1,12 +1,11 @@
 require 'spec_helper'
-require 'board'
 
 describe Board do
   context "#move" do
     it "should handle a move" do
       board = Board.new("   /   /   ")
       board.move(0)
-      board.inspect.should == "x  /   /   "
+      board.inspect.should == "X  /   /   "
     end
   end
 
@@ -15,40 +14,39 @@ describe Board do
       Board.new("   /   /   ").possible_moves.should == [0,1,2,3,4,5,6,7,8]
     end
     it "should come up with moves as second player" do
-      Board.new("   / x /   ").possible_moves.should == [0,1,2,3,5,6,7,8]
+      Board.new("   / X /   ").possible_moves.should == [0,1,2,3,5,6,7,8]
     end
   end
 
   context "#evaluate" do
     it "should evaluate a win" do
-      Board.new("xxx/ o /  o").evaluate.should > 0
-      Board.new(" o /xxx/ o ").evaluate.should > 0
-      Board.new(" oo/   /xxx").evaluate.should > 0
+      Board.new("XXX/ O /  O").evaluate.should > 0
+      Board.new(" O /XXX/ O ").evaluate.should > 0
+      Board.new(" OO/   /XXX").evaluate.should > 0
 
-      Board.new("xxo/xo /x o").evaluate.should > 0
-      Board.new(" x /xxo/ox ").evaluate.should > 0
-      Board.new(" ox/  x/oox").evaluate.should > 0
+      Board.new("XXO/XO /X O").evaluate.should > 0
+      Board.new(" X /XXO/OX ").evaluate.should > 0
+      Board.new(" OX/  X/OOX").evaluate.should > 0
 
-      Board.new("xxo/ xo/ ox").evaluate.should > 0
-      Board.new(" ox/ xo/xoo").evaluate.should > 0
+      Board.new("XXO/ XO/ OX").evaluate.should > 0
+      Board.new(" OX/ XO/XOO").evaluate.should > 0
     end
     it "should evaluate a loss" do
-      Board.new("ooo/ x /  x").evaluate.should < 0
-      Board.new(" x /ooo/ x ").evaluate.should < 0
-      Board.new(" xx/   /ooo").evaluate.should < 0
+      Board.new("OOO/ X /  X").evaluate.should < 0
+      Board.new(" X /OOO/ X ").evaluate.should < 0
+      Board.new(" XX/   /OOO").evaluate.should < 0
 
-      Board.new("oox/ox /o x").evaluate.should < 0
-      Board.new(" o /oox/xo ").evaluate.should < 0
-      Board.new(" xo/  o/xxo").evaluate.should < 0
+      Board.new("OOX/OX /O X").evaluate.should < 0
+      Board.new(" O /OOX/XO ").evaluate.should < 0
+      Board.new(" XO/  O/XXO").evaluate.should < 0
 
-      Board.new("oox/ ox/ xo").evaluate.should < 0
-      Board.new(" xo/ ox/oxx").evaluate.should < 0
+      Board.new("OOX/ OX/ XO").evaluate.should < 0
+      Board.new(" XO/ OX/OXX").evaluate.should < 0
     end
     it "should evaluate undetermined" do
       Board.new("   /   /   ").evaluate.should == 0
-      Board.new("x o/ x /o  ").evaluate.should == 0
+      Board.new("X O/ X /O  ").evaluate.should == 0
     end
   end
-
 end
 

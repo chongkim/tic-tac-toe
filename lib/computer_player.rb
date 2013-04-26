@@ -22,6 +22,7 @@ class ComputerPlayer < Player
 
   def reset_memo
     @symmetries = nil
+    @memoized_position = {}
   end
 
   def start_show_thinking
@@ -58,13 +59,25 @@ class ComputerPlayer < Player
     }.map{|e| e[1]}
   end
 
+  def memoized_position value=nil
+    key = board.inspect
+
+    stored_value = @memoized_position[key]
+    return stored_value if stored_value
+
+    return @memoized_position[key] = value if value
+
+    return nil
+  end
+
   def deep_evaluate m=nil
     board.move(m) if m
-    return board.evaluate if board.evaluate != 0
-    return 0 if board.possible_moves.empty?
+    return memoized_position if memoized_position
+    return memoized_position(board.evaluate) if board.evaluate != 0
+    return memoized_position(0) if board.possible_moves.empty?
 
     values = board.possible_moves.map { |m| deep_evaluate(m) }
-    return board.turn < 0 ? values.min : values.max
+    return memoized_position(board.turn < 0 ? values.min : values.max)
   ensure
     board.unmove(m) if m
   end
