@@ -2,10 +2,17 @@ class Piece
   attr_reader :symbol
 
   def initialize char
-    return @symbol = :X   if char == 'x' || char == :x || char == 'X' || char == :X
-    return @symbol = :O   if char == 'o' || char == :o || char == 'O' || char == :O
-    return @symbol = :' ' if char == ' ' || char == :' '
-    raise "unknown piece"
+    @symbol = case char
+              when 'x', :x, 'X', :X
+                :X
+              when 'o', :o, 'O', :O
+                :O
+              when ' ', :' '
+                :' '
+              else
+                raise "unknown piece"
+              end
+    @lower_symbol = @symbol.to_s.downcase.to_sym
   end
 
   def to_s
@@ -21,9 +28,9 @@ class Piece
     when Piece
       @symbol == a.symbol
     when Symbol
-      @symbol == a
+      @symbol == a || @lower_symbol == a
     else
-      @symbol == a.to_sym
+      @symbol == a.to_sym || @lower_symbol == a.to_sym
     end
   end
 end

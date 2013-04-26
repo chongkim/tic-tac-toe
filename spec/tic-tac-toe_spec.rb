@@ -2,10 +2,10 @@ def play player_choice, input_list=nil, play_again=nil
   t = TicTacToe.new
   t.stub(:gets).and_return(*[player_choice, play_again].compact)
   t.human_player.stub(:gets).and_return(*input_list) if input_list
-  # t.human_player.stub(:print)
-  # t.human_player.stub(:puts)
-  # t.stub(:print)
-  # t.stub(:puts)
+  t.human_player.stub(:print)
+  t.human_player.stub(:puts)
+  t.stub(:print)
+  t.stub(:puts)
   t.main_loop
 end
 
@@ -62,7 +62,7 @@ EOF
         # expected computer moves: [4,1,6,5]
     end
 
-    it "should select (2) Computer and win", focus: true do
+    it "should select (2) Computer and win" do
       play("2", # Computer go first
         ["1", "q"], # human moves
         "n")

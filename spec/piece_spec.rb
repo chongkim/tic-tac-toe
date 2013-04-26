@@ -22,4 +22,12 @@ describe Piece do
       expect{ Piece.new("-") }.to raise_error
     end
   end
+  context "#==" do
+    it "should compare with a symbol" do
+      (Piece.new("x") == :x).should be_true
+    end
+    it "should compare with a string" do
+      (Piece.new("x") == "x").should be_true
+    end
+  end
 end

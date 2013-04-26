@@ -17,11 +17,11 @@ class ComputerPlayer < Player
 
   def initialize *args
     super(*args)
+    @semaphore = Mutex.new
     reset_memo
   end
 
   def reset_memo
-    @symmetries = nil
     @memoized_position = {}
   end
 
@@ -32,17 +32,21 @@ class ComputerPlayer < Player
       while @thinking_thread_continue
         sleep 0.5
         if @thinking_thread_continue
-          @thinking_thread_did_print = true
-          print "."
+          @semaphore.synchronize do
+            @thinking_thread_did_print = true
+            print "." if @thinking_thread_continue
+          end
         end
       end
     end
   end
 
   def stop_show_thinking
-    puts if @thinking_thread_did_print
-    @thinking_thread_did_print = false
     @thinking_thread_continue = false
+    @semaphore.synchronize do
+      puts if @thinking_thread_did_print
+    end
+    @thinking_thread_did_print = false
     @thinking_thread.join
   end
 
@@ -91,7 +95,7 @@ class ComputerPlayer < Player
   end
 
   def symmetries
-    @symmetries ||= TRANS_MAP.keys.keep_if { |trans| symmetric?(trans) }
+    TRANS_MAP.keys.keep_if { |trans| symmetric?(trans) }
   end
 
   # see symmetries of current board e.g. rot2
