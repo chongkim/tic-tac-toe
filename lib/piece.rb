@@ -19,10 +19,6 @@ class Piece
     @symbol.to_s
   end
 
-#   def other
-#     @symbol == :X ? :O : :X
-#   end
-
   def ==(a)
     case a
     when Piece

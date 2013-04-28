@@ -1,6 +1,38 @@
 require 'spec_helper'
 
 describe Board do
+  context "#initialize" do
+    it "should handle 0 args" do
+      Board.new.inspect.should == "   /   /   "
+    end
+    it "should handle initial position" do
+      Board.new(" x /   /   ").inspect.should == " X /   /   "
+    end
+  end
+
+  context "#to_s" do
+    it "should show initial position" do
+      Board.new.to_s.should == <<-EOF
+                     0 | 1 | 2 
+                    -----------
+                     3 | 4 | 5 
+                    -----------
+                     6 | 7 | 8 
+EOF
+    end
+    
+    it "should show set board" do
+      Board.new("XX /OX / OO").to_s.should == <<-EOF
+                     X | X | 2 
+                    -----------
+                     O | X | 5 
+                    -----------
+                     6 | O | O 
+EOF
+    end
+ end
+
+
   context "#move" do
     it "should handle a move" do
       board = Board.new("   /   /   ")

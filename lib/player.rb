@@ -6,4 +6,8 @@ class Player
     @board = board
     @name = name
   end
+
+  def set_board board
+    @board = board
+  end
 end

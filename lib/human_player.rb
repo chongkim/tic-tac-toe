@@ -1,13 +1,17 @@
 require 'player'
 
 class HumanPlayer < Player
+  def initialize board, name="You"
+    super(board, name)
+  end
+
   def prompt_for_move
     puts "#{@board.to_s}"
     begin
-      print "input [0-8,q] (q-quit): "
+      print "input [0-#{board.size-1},q] (q-quit): "
       str = gets.chomp
       throw :quit if str == 'q'
-    end until str =~ /[0-8]/ && @board.space?(str.to_i)
+    end until str =~ /[0-#{board.size-1}]/ && @board.space?(str.to_i)
     str
   end
 

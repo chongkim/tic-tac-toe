@@ -1,9 +1,13 @@
 require 'computer_player'
 
+$debug = false
+
 describe ComputerPlayer do
   context "#deep_evaluate" do
     it "should do a deep evaluate" do
       ComputerPlayer.new(Board.new("XO /OX /XO ")).deep_evaluate.should > 0
+      # debugger
+      ComputerPlayer.new(Board.new("XXX /OOO /    /    ")).deep_evaluate.should > 0
     end
   end
 
