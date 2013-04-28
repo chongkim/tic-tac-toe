@@ -33,10 +33,12 @@ class TicTacToe
       when "2"
         board = Board.new(4)
       end
-      @human_player.set_board(board)
-      @computer_player.set_board(board)
-      @board = board
-      return board
+      if board
+        @human_player.set_board(board)
+        @computer_player.set_board(board)
+        @board = board
+        return board
+      end
     end
   end
 
