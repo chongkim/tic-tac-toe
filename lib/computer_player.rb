@@ -80,7 +80,11 @@ class ComputerPlayer < Player
     return memoized_position(board.evaluate) if board.evaluate != 0
     return memoized_position(0) if board.possible_moves.empty?
 
-    # it's faster to just do all the moves than than to calculate symmetries for 3x3 and less
+    # check symmetry lookup table
+    lookup_evaluation = symmetry.lookup_symmetrical_evaluation
+    return memoized_position(lookup_evaluation) if lookup_evaluation
+
+    # note: it's faster to just do all the moves than than to calculate symmetries for 3x3 and less
     moves = board.dim < 4 ? board.possible_moves : symmetry.possible_moves_minus_symmetry
     values = moves.map { |m| deep_evaluate(m) }
     

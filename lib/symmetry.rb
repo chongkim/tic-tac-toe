@@ -1,11 +1,12 @@
 require 'matrix'
 
 class Symmetry
-  attr_reader :board
+  attr_reader :board, :evaluations
 
   def initialize board
     @board = board
     @trans_map = {}
+    @evaluations = {}
   end
 
   def set_board board
@@ -78,5 +79,22 @@ class Symmetry
 
   def possible_moves_minus_symmetry
     symmetry_equivalent_classes.map(&:first)
+  end
+
+  def transform_key trans
+    key = ""
+    board.size.times do |pos|
+      key << "/" if pos != 0 && pos % board.dim == 0
+      key << board[transform(trans, pos)].to_s
+    end
+    key
+  end
+
+  def lookup_symmetrical_evaluation
+    trans_map.keys.each do |trans|
+      val = evaluations[transform_key(trans)]
+      return val if val
+    end
+    return nil
   end
 end

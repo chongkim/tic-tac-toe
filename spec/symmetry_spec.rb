@@ -54,4 +54,34 @@ describe Symmetry do
       Symmetry.new(Board.new("X  /   /   ")).possible_moves_minus_symmetry.should == [1,2,4,5,8]
     end
   end
+
+  context "#transform_key" do
+    it "should rotate a key" do
+      symmetry = Symmetry.new(Board.new("XX / O /   "))
+      symmetry.transform_key(:r1).should == "XX / O /   "
+      symmetry.transform_key(:r2).should == "   /XO /X  "
+      symmetry.transform_key(:r3).should == "   / O / XX"
+      symmetry.transform_key(:r4).should == "  X/ OX/   "
+    end
+    it "should flip a key" do
+      symmetry = Symmetry.new(Board.new("XX / O /   "))
+      symmetry.transform_key(:h).should  == "   / O /XX "
+      symmetry.transform_key(:v).should  == " XX/ O /   "
+      symmetry.transform_key(:d1).should == "   / OX/  X"
+      symmetry.transform_key(:d2).should == "X  /XO /   "
+    end
+  end
+
+  context "#lookup_symmetrical_evaluation" do
+    it "store an evaluation and retrieve it" do
+      # store the evaluation of the rotated board
+      # then try to retrieve it with lookup_symmetrical_evaluation
+      board = Board.new(" x /   /   ")
+      symmetry = Symmetry.new(board)
+      key = symmetry.transform_key(:r2)
+      symmetry.evaluations[key] = 123
+      symmetry.evaluations[key].should == 123
+      symmetry.lookup_symmetrical_evaluation.should == 123
+    end
+  end
 end

@@ -7,7 +7,6 @@ describe ComputerPlayer do
   context "#deep_evaluate" do
     it "should do a deep evaluate" do
       ComputerPlayer.new(Board.new("XO /OX /XO ")).deep_evaluate.should > 0
-      ComputerPlayer.new(Board.new("XXX /OOO /    /    ")).deep_evaluate.should > 0
     end
   end
 
@@ -19,6 +18,12 @@ describe ComputerPlayer do
 
     it "should come up with best moves with deep evaluation" do
       ComputerPlayer.new(Board.new("XO /O  /X  ")).best_moves.should == [4,8,5,7,2]
+    end
+  end
+
+  context "4x4" do
+    it "should do a deep evaluate for a 4x4 board" do
+      ComputerPlayer.new(Board.new("XXX /OOO /    /    ")).deep_evaluate.should > 0
     end
   end
 end
