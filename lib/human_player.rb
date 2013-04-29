@@ -11,7 +11,7 @@ class HumanPlayer < Player
       print "input [0-#{board.size-1},q] (q-quit): "
       str = gets.chomp
       throw :quit if str == 'q'
-    end until str =~ /[0-#{board.size-1}]/ && @board.space?(str.to_i)
+    end until str =~ /\d+/ && @board.space?(str.to_i)
     str
   end
 

@@ -1,8 +1,6 @@
 require 'computer_player'
 require 'symmetry'
 
-$debug = false
-
 describe ComputerPlayer do
   context "#deep_evaluate" do
     it "should do a deep evaluate" do

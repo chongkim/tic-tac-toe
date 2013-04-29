@@ -10,17 +10,11 @@ class ComputerPlayer < Player
     @symmetry = Symmetry.new(board)
     @semaphore = Mutex.new
     @trans_map = {}
-    reset_memo
   end
 
   def set_board board
     super(board)
     symmetry.set_board(board)
-    reset_memo
-  end
-
-  def reset_memo
-    @memoized_position = {}
   end
 
   def start_show_thinking
@@ -32,7 +26,8 @@ class ComputerPlayer < Player
         if @thinking_thread_continue
           @semaphore.synchronize do
             @thinking_thread_did_print = true
-            print "." if @thinking_thread_continue
+            # print "." if @thinking_thread_continue
+            puts board.move_list.inspect
           end
         end
       end
@@ -64,12 +59,11 @@ class ComputerPlayer < Player
   end
 
   def memoized_position value=nil
-    key = board.inspect
+    return symmetry.evaluations[board.inspect] = value if value
 
-    stored_value = @memoized_position[key]
-    return stored_value if stored_value
-
-    return @memoized_position[key] = value if value
+    # check symmetry lookup table
+    lookup_evaluation = symmetry.lookup_symmetrical_evaluation
+    return memoized_position(lookup_evaluation) if lookup_evaluation
 
     return nil
   end
@@ -80,12 +74,9 @@ class ComputerPlayer < Player
     return memoized_position(board.evaluate) if board.evaluate != 0
     return memoized_position(0) if board.possible_moves.empty?
 
-    # check symmetry lookup table
-    lookup_evaluation = symmetry.lookup_symmetrical_evaluation
-    return memoized_position(lookup_evaluation) if lookup_evaluation
-
     # note: it's faster to just do all the moves than than to calculate symmetries for 3x3 and less
-    moves = board.dim < 4 ? board.possible_moves : symmetry.possible_moves_minus_symmetry
+    # moves = board.dim < 4 ? board.possible_moves : symmetry.possible_moves_minus_symmetry
+    moves = board.possible_moves
     values = moves.map { |m| deep_evaluate(m) }
     
     return memoized_position(board.turn < 0 ? values.min : values.max)

@@ -98,7 +98,6 @@ class Board
     # win is determined by the last player to move thus the -@turn
     @evaluate = (100-@step)*(-@turn) if @has_win
     @evaluate ||= 0
-    puts "#{@move_list.inspect} - #{@evaluate}" if $debug
     return @evaluate
   end
 
